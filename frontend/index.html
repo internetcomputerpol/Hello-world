@@ -1,0 +1,69 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Hello World</title>
+    <style>
+      body {
+        padding: 10px 60px;
+        font-family: sans-serif;
+        font-size: 1.5rem;
+      }
+      #greeting {
+        margin: 10px auto;
+        padding: 10px 60px;
+        border: 1px solid #222;
+      }
+      #greeting:empty {
+        display: none;
+      }
+      img {
+        width: 150px;
+        height: 150px;
+      }
+    </style>
+    <script type="module">
+
+      import { backend } from 'declarations/backend';
+
+      let currentIndex = 0;
+
+      async function displayImage() {
+        const image = await backend.getImage(currentIndex);
+        const description = await backend.getDescription(currentIndex);
+        document.getElementById('image').src = image;
+        document.getElementById('description').textContent = description;
+      }
+
+
+      function nextImage() {
+        if (currentIndex < 9) {
+          currentIndex++;
+          displayImage();
+        }
+      }
+
+      function previousImage() {
+        if (currentIndex > 0) {
+          currentIndex--;
+          displayImage();
+        }
+      }
+
+      window.onload = () => {
+        displayImage();
+        document.getElementById('next').onclick = nextImage;
+        document.getElementById('previous').onclick = previousImage;
+      };
+    </script>
+  </head>
+  <body>
+    <main>
+      <section id="greeting">
+        <img id="image" src="" alt="Image" />
+        <p id="description"></p>
+        <button id="previous">Back</button>
+        <button id="next">Forward</button>
+      </section>
+    </main>
+  </body>
+</html>
